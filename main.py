@@ -1,5 +1,3 @@
-
-
 import fastapi
 import pymysql
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,8 +13,6 @@ def conecta():
     cursor = cnx.cursor()
 
     return cursor, cnx
-
-cursor, cnx = conecta()
 
 
 app = fastapi.FastAPI()
@@ -56,3 +52,8 @@ def post(a: request):
     cnx.close()
     cursor.close()
     return {"message": values[0]}
+
+
+if __name__ ==  '__main__':
+   import uvicorn
+   uvicorn.run("main:app", host="127.0.0.1", port=8000, log_level="info", reload=True)
