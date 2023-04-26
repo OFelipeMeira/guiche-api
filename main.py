@@ -29,7 +29,7 @@ app.add_middleware(
 @app.get("/get")
 def bd():
     cursor, cnx = conecta()
-    cursor.execute("SELECT name FROM espera WHERE ja_atendido = 0 ORDER BY motivo ASC, id ASC")
+    cursor.execute("SELECT name FROM espera WHERE ja_atendido = 0 ORDER BY preferencial DESC, id ASC")
     values = cursor.fetchall()
     cnx.close()
     cursor.close()
@@ -42,7 +42,7 @@ class request(BaseModel):
 @app.post("/post")
 def post(a: request):
     cursor, cnx = conecta()
-    cursor.execute("SELECT id FROM espera WHERE ja_atendido = 0 ORDER BY motivo ASC, id ASC")
+    cursor.execute("SELECT id FROM espera WHERE ja_atendido = 0 ORDER BY preferencial DESC, id ASC")
     values = cursor.fetchall()
     val0 = values[0][0]
     cursor.execute(f"UPDATE espera SET guiche = {a.guiche}, ja_atendido = 1 WHERE id = {val0}")
