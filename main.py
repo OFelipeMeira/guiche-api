@@ -42,10 +42,12 @@ class request(BaseModel):
 @app.post("/post")
 def post(a: request):
     cursor, cnx = conecta()
+    cursor.execute("select ordem from espera order by ordem desc")
+    maior = cursor.fetchone()
     cursor.execute("SELECT id FROM espera WHERE ja_atendido = 0 ORDER BY preferencial DESC, id ASC")
     values = cursor.fetchall()
     val0 = values[0][0]
-    cursor.execute(f"UPDATE espera SET guiche = {a.guiche}, ja_atendido = 1 WHERE id = {val0}")
+    cursor.execute(f"UPDATE espera SET guiche = {a.guiche}, ordem = {maior+1}, ja_atendido = 1 WHERE id = {val0}")
     cursor.execute(f"SELECT name, motivo FROM espera WHERE id = {val0}")
     values = cursor.fetchall()
     cnx.commit()
